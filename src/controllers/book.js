@@ -30,4 +30,27 @@ const getBookById = async (req, res) => {
     res.status(404).json({ error: "book not find" });
   }
 };
-export default { getAllBooks, addBook, getBookById };
+const deleteBook = async (req,res) =>
+{
+  try{
+    const Deletebook = await Book.deleteOne({_id:req.params.id})
+    res.json(Deletebook);
+  }catch(e)
+  {
+    res.status(404).json({error : "delete book not find "})
+  }
+}
+const UpdateBook = async (req,res) =>
+{
+  try{
+    const book = await Book.findById(req.params.id);
+    Object.assign(book,req.body)
+    book.save();
+    res.status(200).json({data : book});
+  }
+  catch(e)
+  {
+    res.status(404).json("update book not find");
+  }
+}
+export default { getAllBooks, addBook, getBookById,deleteBook,UpdateBook };
